@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-game
+spec:
+  selector:
+    app: service-game
+  type: NodePort
+  ports:
+    - name: http
+      port: 8082
+      nodePort: 31002
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-game
+spec:
+  selector:
+    matchLabels:
+      app: service-game
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: service-game
+    spec:
+      containers:
+        - name: server
+          image: yvhzbl/service-game
+          ports:
+            - name: http
+              containerPort: 8082
+
+---
